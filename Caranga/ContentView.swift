@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var path = NavigationPath()
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack(path: $path) {
+            CarListingView(path: $path)
+                .navigationDestination(for: NavigationType.self) { type in
+                switch type {
+                case .detail(let car):
+                    CarDetailView(car: .constant(car), path: $path)
+                case .form(let car):
+                    CarFormView(car: .constant(car), path: $path)
+                }
+            }
         }
-        .padding()
     }
 }
 
